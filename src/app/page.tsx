@@ -1,7 +1,12 @@
+"use client";
+
 import React from "react";
 import Head from "next/head";
+import { useRouter } from "next/navigation";
 
 const HomePage: React.FC = () => {
+  const router = useRouter();
+
   return (
     <>
       <Head>
@@ -12,7 +17,6 @@ const HomePage: React.FC = () => {
         />
       </Head>
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 space-y-12 bg-gradient-to-tr from-blue-100 via-purple-100 to-yellow-100 rounded-2xl">
-
         <main className="flex flex-col items-center text-center px-4 py-4 w-full max-w-6xl rounded-xl">
           <h1 className="text-2xl lg:text-4xl max-w-2xl font-bold text-gray-700 mb-4">
             La práctica hace al maestro 💡 y nosotros hacemos la práctica 💪✨
@@ -21,7 +25,10 @@ const HomePage: React.FC = () => {
             Democratizamos el acceso a la educación superior con práctica
             accesible y personalizada.
           </p>
-          <button className="border border-gray-300 bg-white text-gray-700 px-6 py-3 rounded-xl font-medium hover:bg-black hover:text-white transition duration-300">
+          <button
+            className="border border-gray-300 bg-white text-gray-700 px-6 py-3 rounded-xl font-medium hover:bg-black hover:text-white transition duration-300"
+            onClick={() => router.push("/quiz")}
+          >
             Comienza ahora
           </button>
         </main>
