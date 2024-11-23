@@ -1,28 +1,21 @@
-// Definir los tipos de las props
 interface QuizQuestionProps {
     id: number;
     text: string;
     isSelected: boolean;
-    onClick: (id: number) => void;
+    onClick: () => void;
   }
   
-  export default function QuizQuestion({
-    id,
-    text,
-    isSelected,
-    onClick,
-  }: QuizQuestionProps) {
+  export default function QuizQuestion({ id, text, isSelected, onClick }: QuizQuestionProps) {
     return (
       <div
         key={id}
-        onClick={() => onClick(id)}  
+        onClick={onClick}  
         className={`flex items-center p-3 border rounded-lg cursor-pointer transition-colors duration-300
-          ${isSelected ? 'bg-green-500 text-white' : 'bg-white text-gray-800 border-gray-300'}
+          ${isSelected ? 'bg-blue-100 text-gray-800' : 'bg-white text-gray-800 border-gray-300'}
         `}
       >
         <div>{text}</div>
       </div>
     );
   }
-  
   

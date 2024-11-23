@@ -1,4 +1,5 @@
 import React from 'react';
+import { ChevronRight } from 'lucide-react';
 
 
 interface ButtonProps {
@@ -13,11 +14,12 @@ export default function NextButton({
   return (
     <button
       onClick={onClick} 
-      className={`m-2 py-2 px-4 rounded-md text-white 
-                  bg-purple-600 hover:bg-purple-400
+      className={`flex m-2 py-2 px-4 rounded-md text-zinc-700 
+                  bg-white hover:bg-zinc-300
                   transition-colors duration-300`}
     >
       {text}
+      <ChevronRight />
     </button>
   );
 }
