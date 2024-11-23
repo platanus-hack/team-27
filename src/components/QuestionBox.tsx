@@ -2,7 +2,21 @@
 import QuizQuestion from "./QuizQuestion";
 import { useState } from "react";
 
-export default function QuestionBox() {
+interface QuestionBoxProps {
+  question: {
+    p: string;
+    r: {
+      a: string;
+      b: string;
+      c: string;
+      d: string;
+    };
+    r_correcta: string;
+  };
+  questionNumber: number;
+}
+
+export default function QuestionBox({ question, questionNumber }: QuestionBoxProps) {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
 
   const handleOptionClick = (id: number) => {
@@ -10,39 +24,25 @@ export default function QuestionBox() {
   };
 
   return (
-    <>
-      <div className="bg-white h-96 w-80 border-2 border-zinc-200 shadow-lg sm:h-72 sm:w-64 md:h-96 md:w-80 lg:h-96 lg:w-96 rounded-lg p-4">
-        <div className="space-y-4">
-            <h1 className="text-2xl font-bold" >Pregunta 1</h1>
-          
-            <h1 className="text-xl text-left w-full">¿Cuál es la raíz de 5?</h1>
+    <div className="bg-white w-80 max-h-[500px] overflow-y-auto border-2 border-zinc-200 shadow-lg rounded-lg p-4">
+      <div className="space-y-4">
+        <h1 className="text-2xl font-bold">Pregunta {questionNumber}</h1>
+        <h2 className="text-lg text-left w-full">{question.p}</h2>
 
+        {Object.keys(question.r).map((key, index) => {
+          const optionKey = key as keyof typeof question.r; 
+          return (
             <QuizQuestion
-              id={1}
-              text="Opción 1"
-              isSelected={selectedOption === 1}
+              key={index}
+              id={index + 1}
+              text={question.r[optionKey]}
+              isSelected={selectedOption === index + 1}
               onClick={handleOptionClick}
             />
-            <QuizQuestion
-              id={2}
-              text="Opción 2"
-              isSelected={selectedOption === 2}
-              onClick={handleOptionClick}
-            />
-            <QuizQuestion
-              id={3}
-              text="Opción 3"
-              isSelected={selectedOption === 3}
-              onClick={handleOptionClick}
-            />
-            <QuizQuestion
-              id={4}
-              text="Opción 4"
-              isSelected={selectedOption === 4}
-              onClick={handleOptionClick}
-            />
-        </div>
+          );
+        })}
       </div>
-    </>
+    </div>
   );
 }
+
