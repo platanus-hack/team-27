@@ -1,10 +1,10 @@
-
+import QuestionBox from "@/components/QuestionBox";
 
 export default function QuizPage() {
     return (
         <>
-            <div>
-                Quizpage
+            <div className="flex justify-center">
+                <QuestionBox />
             </div>
         </>
     );
