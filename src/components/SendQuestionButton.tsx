@@ -11,7 +11,7 @@ export default function SendQuestionButton({
   userQuery,
   onSendQuestion,
   onReceiveResponse,
-    // eslint-disable-next-line
+  // eslint-disable-next-line
   onSessionReceived,
 }: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -26,8 +26,7 @@ export default function SendQuestionButton({
 
   const sendQuestion = async () => {
     setIsLoading(true);
-    const urlLambda =
-      "https://hack-backend-gwys.onrender.com/ai-tutor/";
+    const urlLambda = "https://hack-backend-gwys.onrender.com/ai-tutor/";
     /*const agentAliasId = "3WUDBKQFAO";
     const agentId = "FJZGDZOHZV";
 
@@ -46,19 +45,31 @@ export default function SendQuestionButton({
     console.log({ updatedQuestionData });*/
 
     try {
-      console.log(userAnswer, userQuery)
-      const responseData = await axios.post(urlLambda,{ question: userAnswer ?? userQuery },
-      ).then((res) => {
-        console.log(res)
-        if(res.status === 200) return res.data
-        }).catch((error: Error) => {
-        console.error("Error sending question:", error);
-      });
+      console.log(userAnswer, userQuery);
+      const responseData = await axios
+        .post(
+          urlLambda,
+          { question: userAnswer ?? userQuery },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin":
+                "https://hack-backend-gwys.onrender.com",
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) return res.data;
+        })
+        .catch((error: Error) => {
+          console.error("Error sending question:", error);
+        });
 
       /*const newChatbotMessage = responseData?.response || "";
       const currentChatbotSessionId = responseData?.session_id;
       if (onSessionReceived) onSessionReceived(currentChatbotSessionId);*/
-      console.log(responseData)
+      console.log(responseData);
       if (onReceiveResponse) onReceiveResponse(responseData?.msg);
     } catch (error) {
       console.error("Error sending question:", error);
