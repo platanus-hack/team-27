@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import SendQuestionButton from "./SendQuestionButton";
 
 export interface ChatMessage {
   sender: "user" | "bot";
@@ -12,6 +13,11 @@ interface ChatbotProps {
   onClose: () => void;
   messages: ChatMessage[];
   onSendMessage: (message: string) => void;
+  onReceiveResponse: (response: string) => void;
+  onSessionReceived: (sessionId: string) => void;
+  userAnswer?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  questionData: any;
 }
 
 const Chatbot: React.FC<ChatbotProps> = ({
@@ -19,6 +25,10 @@ const Chatbot: React.FC<ChatbotProps> = ({
   onClose,
   messages,
   onSendMessage,
+  onReceiveResponse,
+  onSessionReceived,
+  userAnswer,
+  questionData,
 }) => {
   const panelRef = useRef<HTMLDivElement>(null);
   const [inputValue, setInputValue] = useState("");
@@ -56,12 +66,6 @@ const Chatbot: React.FC<ChatbotProps> = ({
     if (inputValue.trim() !== "") {
       onSendMessage(inputValue.trim());
       setInputValue("");
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleSendMessage();
     }
   };
 
@@ -114,17 +118,18 @@ const Chatbot: React.FC<ChatbotProps> = ({
         <input
           type="text"
           className="flex-grow px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Type your message..."
+          placeholder="¿Tienes alguna duda?"
           value={inputValue}
           onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
         />
-        <button
-          className="ml-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          onClick={handleSendMessage}
-        >
-          Send
-        </button>
+        <SendQuestionButton
+          questionData={questionData}
+          userAnswer={userAnswer}
+          userQuery={inputValue}
+          onSendQuestion={handleSendMessage}
+          onReceiveResponse={onReceiveResponse}
+          onSessionReceived={onSessionReceived}
+        />
       </div>
     </div>
   );

@@ -5,10 +5,18 @@ import { useState } from "react";
 export default function SendQuestionButton({
   questionData,
   userAnswer,
+  userQuery,
+  onSendQuestion,
+  onReceiveResponse,
+  onSessionReceived,
 }: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   questionData: any;
-  userAnswer: string;
+  userAnswer?: string;
+  userQuery: string;
+  onSendQuestion?: () => void;
+  onReceiveResponse?: (response: string) => void;
+  onSessionReceived?: (sessionId: string) => void;
 }) {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -21,7 +29,8 @@ export default function SendQuestionButton({
 
     const updatedQuestionData = {
       ...questionData,
-      r_usuario: userAnswer,
+      r_usuario: userAnswer || "no-option-selected-yet",
+      consulta_usuario: userQuery,
     };
 
     const jsonData = {
@@ -38,18 +47,23 @@ export default function SendQuestionButton({
         body: JSON.stringify(jsonData),
       });
       const responseData = await response.json();
-      console.log("Response:", responseData);
+      const newChatbotMessage = responseData.response || "";
+      const currentChatbotSessionId = responseData.session_id;
+      onSessionReceived && onSessionReceived(currentChatbotSessionId);
+      onReceiveResponse && onReceiveResponse(newChatbotMessage);
+      console.log("Response:", { responseData });
     } catch (error) {
       console.error("Error sending question:", error);
     } finally {
       setIsLoading(false);
+      onSendQuestion && onSendQuestion();
     }
   };
 
   return (
     <button
       onClick={sendQuestion}
-      className="bg-blue-500 text-white px-4 py-2 rounded"
+      className="ml-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
       disabled={isLoading}
     >
       {isLoading ? "Enviando..." : "Enviar Pregunta"}

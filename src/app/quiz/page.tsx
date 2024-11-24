@@ -62,14 +62,17 @@ export default function QuizPage() {
       ...prevMessages,
       { sender: "user", text: message },
     ]);
+  };
 
-    // Simulate bot response (you can replace this with actual bot logic)
-    setTimeout(() => {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: "bot", text: "This is a bot response." },
-      ]);
-    }, 1000);
+  const handleReceiveResponse = (response: string) => {
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { sender: "bot", text: response },
+    ]);
+  };
+
+  const handleSessionReceived = (sessionId: string) => {
+    console.log({ sessionId });
   };
 
   if (!data) {
@@ -77,6 +80,9 @@ export default function QuizPage() {
   }
 
   const currentQuestion = data.preguntas[currentQuestionIndex];
+  const currentSelectedOption = selectedOptions[currentQuestionIndex];
+
+  const currentSelectedOptionLetter = mapOptionToLetter(currentSelectedOption);
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-gradient-to-tr from-blue-100 via-purple-100 to-yellow-100">
@@ -109,7 +115,16 @@ export default function QuizPage() {
         onClose={toggleChatbot}
         messages={messages}
         onSendMessage={handleSendMessage}
+        onReceiveResponse={handleReceiveResponse}
+        onSessionReceived={handleSessionReceived}
+        userAnswer={currentSelectedOptionLetter}
+        questionData={currentQuestion}
       />
     </div>
   );
 }
+
+const mapOptionToLetter = (optionIndex?: number | null): string | undefined => {
+  if (!optionIndex) return;
+  return String.fromCharCode(96 + optionIndex);
+};
