@@ -1,8 +1,10 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import QuestionBox from "@/components/QuestionBox";
 import NextButton from "@/components/NextButton";
 import SendButton from "@/components/SendButton";
+import Chatbot, { ChatMessage } from "@/components/Chatbot";
 
 export default function QuizPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -12,6 +14,8 @@ export default function QuizPage() {
     [key: number]: number | null;
   }>({});
   const [submitted, setSubmitted] = useState<boolean>(false);
+  const [isChatbotOpen, setIsChatbotOpen] = useState<boolean>(false);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,6 +52,26 @@ export default function QuizPage() {
     setSubmitted(true);
   };
 
+  const toggleChatbot = () => {
+    setIsChatbotOpen(!isChatbotOpen);
+  };
+
+  const handleSendMessage = (message: string) => {
+    // Add user's message
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { sender: "user", text: message },
+    ]);
+
+    // Simulate bot response (you can replace this with actual bot logic)
+    setTimeout(() => {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: "bot", text: "This is a bot response." },
+      ]);
+    }, 1000);
+  };
+
   if (!data) {
     return <div>Loading...</div>;
   }
@@ -73,6 +97,19 @@ export default function QuizPage() {
           disabled={!submitted}
         />
       </div>
+      <button
+        className="fixed bottom-4 right-4 bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        onClick={toggleChatbot}
+        aria-label="Toggle Chatbot"
+      >
+        💬
+      </button>
+      <Chatbot
+        isOpen={isChatbotOpen}
+        onClose={toggleChatbot}
+        messages={messages}
+        onSendMessage={handleSendMessage}
+      />
     </div>
   );
 }
