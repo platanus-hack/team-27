@@ -12,6 +12,7 @@ export default function QuizPage() {
   const [selectedOptions, setSelectedOptions] = useState<{
     [key: number]: number | null;
   }>({});
+  const [submitted, setSubmitted] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,12 +33,7 @@ export default function QuizPage() {
     if (data && currentQuestionIndex < data.preguntas.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
-  };
-
-  const handleBack = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
-    }
+    setSubmitted(false);
   };
 
   const handleOptionClick = (questionId: number, optionId: number) => {
@@ -48,8 +44,9 @@ export default function QuizPage() {
   };
 
   const handleSendAnswer = () => {
-    console.log(currentQuestion);
-    console.log(selectedOptions);
+    console.log({ currentQuestion });
+    console.log({ selectedOptions });
+    setSubmitted(true);
   };
 
   if (!data) {
@@ -65,13 +62,17 @@ export default function QuizPage() {
         questionNumber={currentQuestionIndex + 1}
         selectedOption={selectedOptions[currentQuestionIndex]}
         onOptionClick={handleOptionClick}
+        submitted={submitted}
       />
       <div>
-        <SendButton onClick={handleSendAnswer} />
+        <SendButton onClick={handleSendAnswer} disabled={submitted} />
       </div>
       <div className="flex justify-center space-x-4 mt-4">
-        <BackButton text="Anterior" onClick={handleBack} />
-        <NextButton text="Siguiente" onClick={handleNext} />
+        <NextButton
+          text="Siguiente"
+          onClick={handleNext}
+          disabled={!submitted}
+        />
       </div>
     </div>
   );
