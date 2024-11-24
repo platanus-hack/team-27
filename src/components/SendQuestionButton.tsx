@@ -51,7 +51,7 @@ export default function SendQuestionButton({
       ).then((res) => {
         console.log(res)
         if(res.status === 200) return res.data
-        }).catch((error) => {
+        }).catch((error: Error) => {
         console.error("Error sending question:", error);
       });
 
@@ -71,11 +71,7 @@ export default function SendQuestionButton({
   return (
     <button
       onClick={sendQuestion}
-<<<<<<< Updated upstream
-      className=" ml-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-=======
       className="px-4 py-2 ml-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
->>>>>>> Stashed changes
       disabled={isLoading}
     >
       {isLoading ? "Enviando..." : "Enviar"}
