@@ -6,6 +6,7 @@ export default function SendQuestionButton({
   questionData,
   userAnswer,
 }: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   questionData: any;
   userAnswer: string;
 }) {

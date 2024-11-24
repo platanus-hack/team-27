@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import QuestionBox from "@/components/QuestionBox";
 import NextButton from "@/components/NextButton";
-import BackButton from "@/components/BackButton";
 import SendButton from "@/components/SendButton";
 
 export default function QuizPage() {
