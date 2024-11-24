@@ -49,14 +49,14 @@ export default function SendQuestionButton({
       const responseData = await response.json();
       const newChatbotMessage = responseData.response || "";
       const currentChatbotSessionId = responseData.session_id;
-      onSessionReceived && onSessionReceived(currentChatbotSessionId);
-      onReceiveResponse && onReceiveResponse(newChatbotMessage);
+      if (onSessionReceived) onSessionReceived(currentChatbotSessionId);
+      if (onReceiveResponse) onReceiveResponse(newChatbotMessage);
       console.log("Response:", { responseData });
     } catch (error) {
       console.error("Error sending question:", error);
     } finally {
       setIsLoading(false);
-      onSendQuestion && onSendQuestion();
+      if (onSendQuestion) onSendQuestion();
     }
   };
 
