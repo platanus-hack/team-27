@@ -70,12 +70,12 @@ export default function SendQuestionButton({
       const currentChatbotSessionId = responseData?.session_id;
       if (onSessionReceived) onSessionReceived(currentChatbotSessionId);*/
       console.log(responseData);
+      if (onSendQuestion) onSendQuestion();
       if (onReceiveResponse) onReceiveResponse(responseData?.msg);
     } catch (error) {
       console.error("Error sending question:", error);
     } finally {
       setIsLoading(false);
-      if (onSendQuestion) onSendQuestion();
     }
   };
 
