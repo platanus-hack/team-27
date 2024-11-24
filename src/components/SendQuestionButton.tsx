@@ -1,13 +1,17 @@
 "use client";
 
+import axios from "axios";
 import { useState } from "react";
 
 export default function SendQuestionButton({
+  // eslint-disable-next-line
   questionData,
   userAnswer,
+  // eslint-disable-next-line
   userQuery,
   onSendQuestion,
   onReceiveResponse,
+    // eslint-disable-next-line
   onSessionReceived,
 }: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -23,9 +27,9 @@ export default function SendQuestionButton({
   const sendQuestion = async () => {
     setIsLoading(true);
     const urlLambda =
-      "https://3d25cyx4zhfawzxp7ao5l3roke0xqbdu.lambda-url.us-east-1.on.aws/";
-    const agentAliasId = "3WUDBKQFAO";
-    const agentId = "ZY63BV4ZTK";
+      "https://hack-backend-gwys.onrender.com/ai-tutor/";
+    /*const agentAliasId = "3WUDBKQFAO";
+    const agentId = "FJZGDZOHZV";
 
     const updatedQuestionData = {
       ...questionData,
@@ -36,22 +40,26 @@ export default function SendQuestionButton({
     const jsonData = {
       input_text: JSON.stringify(updatedQuestionData),
       agent_alias_id: agentAliasId,
-      agent_id: agentId,
+      agent_id: agentId
     };
 
-    console.log({ updatedQuestionData });
+    console.log({ updatedQuestionData });*/
 
     try {
-      const response = await fetch(urlLambda, {
-        method: "POST",
-        body: JSON.stringify(jsonData),
+      console.log(userAnswer, userQuery)
+      const responseData = await axios.post(urlLambda,{ question: userAnswer ?? userQuery },
+      ).then((res) => {
+        console.log(res)
+        if(res.status === 200) return res.data
+        }).catch((error) => {
+        console.error("Error sending question:", error);
       });
-      const responseData = await response.json();
-      const newChatbotMessage = responseData.response || "";
-      const currentChatbotSessionId = responseData.session_id;
-      if (onSessionReceived) onSessionReceived(currentChatbotSessionId);
-      if (onReceiveResponse) onReceiveResponse(newChatbotMessage);
-      console.log("Response:", { responseData });
+
+      /*const newChatbotMessage = responseData?.response || "";
+      const currentChatbotSessionId = responseData?.session_id;
+      if (onSessionReceived) onSessionReceived(currentChatbotSessionId);*/
+      console.log(responseData)
+      if (onReceiveResponse) onReceiveResponse(responseData?.msg);
     } catch (error) {
       console.error("Error sending question:", error);
     } finally {
@@ -63,7 +71,11 @@ export default function SendQuestionButton({
   return (
     <button
       onClick={sendQuestion}
+<<<<<<< Updated upstream
       className=" ml-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+=======
+      className="px-4 py-2 ml-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+>>>>>>> Stashed changes
       disabled={isLoading}
     >
       {isLoading ? "Enviando..." : "Enviar"}
