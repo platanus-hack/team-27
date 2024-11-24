@@ -45,7 +45,10 @@ export default function SendQuestionButton({
     console.log({ updatedQuestionData });*/
 
     const body = {
-      question: userAnswer ?? userQuery,
+      // question: userAnswer ?? userQuery,
+      ...questionData,
+      r_usuario: userAnswer ?? "no-option-selected-yet",
+      consulta_usuario: userQuery,
     };
     const options = {
       headers: {
