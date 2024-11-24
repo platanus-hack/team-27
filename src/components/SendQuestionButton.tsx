@@ -44,20 +44,21 @@ export default function SendQuestionButton({
 
     console.log({ updatedQuestionData });*/
 
+    const body = {
+      question: userAnswer ?? userQuery,
+    };
+    const options = {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "https://hack-backend-gwys.onrender.com",
+      },
+    };
+    console.log({ body, options });
+
     try {
       console.log(userAnswer, userQuery);
       const responseData = await axios
-        .post(
-          urlLambda,
-          { question: userAnswer ?? userQuery },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Origin":
-                "https://hack-backend-gwys.onrender.com",
-            },
-          }
-        )
+        .post(urlLambda, body, options)
         .then((res) => {
           console.log(res);
           if (res.status === 200) return res.data;
